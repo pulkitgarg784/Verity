@@ -8,10 +8,9 @@ export class HeadlineManager {
     ];
     
     this.fakeHeadlines = [
-      "Fake",
-      "Fake",
-      "Fake",
-      "Fake",
+      "This is a Fake Headline I just made up to test the game. This is lorem ipsum text",
+      "This is a Fake Headline I just made up to test the game. This is lorem ipsum text",
+      "This is a Fake Headline I just made up to test the game. This is lorem ipsum text",
     ];
     
     this.currentHeadline = null;

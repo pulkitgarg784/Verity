@@ -25,6 +25,9 @@ export class Computer extends THREE.Group {
         // Add display surface for headlines
         this.displaySurface = this.createDisplaySurface();
         computerModel.add(this.displaySurface);
+
+        this.paperSurface = this.createPaperForHeadline();
+        this.add(this.paperSurface);
       },
       (xhr) => {
         console.log(`Computer model loading: ${(xhr.loaded / xhr.total) * 100}% loaded`);
@@ -52,6 +55,21 @@ createDisplaySurface() {
   return displayMesh;
 }
 
+createPaperForHeadline() {
+  const paperGeometry = new THREE.PlaneGeometry(0.5, 0.5);
+  const paperMaterial = new THREE.MeshBasicMaterial({
+    color: 0xffffff,
+    side: THREE.DoubleSide,
+  });
+
+  const paperMesh = new THREE.Mesh(paperGeometry, paperMaterial);
+  paperMesh.position.set(0.4, 1.2,-0.6); // Place it near the computer
+  paperMesh.rotation.y = Math.PI * -0.15;    // Face it properly
+
+  return paperMesh;
+}
+
+
   displayHeadline(headline) {
     // Create a canvas texture for the headline
     const canvas = document.createElement('canvas');
@@ -60,12 +78,12 @@ createDisplaySurface() {
     const context = canvas.getContext('2d');
 
     // Clear canvas
-    context.fillStyle = '#3a86ff';
+    context.fillStyle = '#ffffff';
     context.fillRect(0, 0, canvas.width, canvas.height);
 
     // Format and draw headline
     context.font = '24px Arial';
-    context.fillStyle = 'white';
+    context.fillStyle = 'black';
     context.textAlign = 'center';
     context.textBaseline = 'middle';
 
@@ -98,7 +116,7 @@ createDisplaySurface() {
 
     // Apply canvas as texture
     const texture = new THREE.CanvasTexture(canvas);
-    this.displaySurface.material.map = texture;
-    this.displaySurface.material.needsUpdate = true;
+    this.paperSurface.material.map = texture;
+    this.paperSurface.material.needsUpdate = true;
   }
 }
