@@ -1,6 +1,7 @@
 import * as THREE from 'three';
 import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
 
+
 export class Computer extends THREE.Group {
   constructor() {
     super();
@@ -68,6 +69,7 @@ createPaperForHeadline() {
 
   return paperMesh;
 }
+
 
 
   displayHeadline(headline) {

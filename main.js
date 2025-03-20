@@ -6,7 +6,6 @@ import { GameState } from './GameState.js';
 import { HeadlineManager } from './HeadlineManager.js';
 import { UserInterface } from './UserInterface.js';
 import { PlayerControls } from './PlayerControl.js';
-import { CSS3DRenderer } from 'three/addons/renderers/CSS3DRenderer.js';
 
 // Set up scene
 const scene = new THREE.Scene();
@@ -16,9 +15,6 @@ renderer.setSize(window.innerWidth, window.innerHeight);
 renderer.setClearColor(0x000000);
 document.body.appendChild(renderer.domElement);
 
-const cssRenderer = new CSS3DRenderer();
-cssRenderer.setSize(window.innerWidth, window.innerHeight);
-document.body.appendChild(cssRenderer.domElement);
 
 // Create game components
 const room = new Room();
@@ -94,7 +90,6 @@ function animate() {
   requestAnimationFrame(animate);
   playerControls.update();
   renderer.render(scene, camera);
-  cssRenderer.render(scene, camera);
 }
 
 animate();
