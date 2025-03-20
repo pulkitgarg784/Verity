@@ -1,6 +1,6 @@
 import * as THREE from 'three';
 import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
-
+import html2canvas from 'html2canvas';
 
 export class Computer extends THREE.Group {
   constructor() {
@@ -24,8 +24,8 @@ export class Computer extends THREE.Group {
         this.add(computerModel);
 
         // Add display surface for headlines
-        this.displaySurface = this.createDisplaySurface();
-        computerModel.add(this.displaySurface);
+        //this.displaySurface = this.createDisplaySurface();
+        //computerModel.add(this.displaySurface);
 
         this.paperSurface = this.createPaperForHeadline();
         this.add(this.paperSurface);
@@ -39,38 +39,76 @@ export class Computer extends THREE.Group {
     );
   }
 
-createDisplaySurface() {
-  // Create a plane slightly in front of the screen to display headlines
-  const displayGeometry = new THREE.PlaneGeometry(1.8, 2);
-  const displayMaterial = new THREE.MeshBasicMaterial({
-    color: 0x3a86ff,
-    side: THREE.DoubleSide,
-  });
+  // createDisplaySurface() {
+  //   // Create a plane slightly in front of the screen to display headlines
+  //   const displayGeometry = new THREE.PlaneGeometry(1.8, 2);
+  //   const displayMaterial = new THREE.MeshBasicMaterial({
+  //     color: 0x3a86ff,
+  //     side: THREE.DoubleSide,
+  //   });
 
-  const displayMesh = new THREE.Mesh(displayGeometry, displayMaterial);
-  displayMesh.position.set(0, 1.55, -1.175); // Adjust position to align with the screen
+  //   const displayMesh = new THREE.Mesh(displayGeometry, displayMaterial);
+  //   displayMesh.position.set(0, 1.55, -1.175); // Adjust position to align with the screen
 
-  // Rotate the plane 180 degrees around the Y-axis to fix the flipped text
-  displayMesh.rotation.y = Math.PI;
+  //   // Rotate the plane 180 degrees around the Y-axis to fix the flipped text
+  //   displayMesh.rotation.y = Math.PI;
 
-  return displayMesh;
-}
+  //   // Add method to display iframe
+  //   this.loadWebsiteToScreen('http://www.example.com');
 
-createPaperForHeadline() {
-  const paperGeometry = new THREE.PlaneGeometry(0.5, 0.5);
-  const paperMaterial = new THREE.MeshBasicMaterial({
-    color: 0xffffff,
-    side: THREE.DoubleSide,
-  });
+  //   return displayMesh;
+  // }
 
-  const paperMesh = new THREE.Mesh(paperGeometry, paperMaterial);
-  paperMesh.position.set(0.4, 1.2,-0.6); // Place it near the computer
-  paperMesh.rotation.y = Math.PI * -0.15;    // Face it properly
+  createPaperForHeadline() {
+    const paperGeometry = new THREE.PlaneGeometry(0.45, 0.425);
+    const paperMaterial = new THREE.MeshBasicMaterial({
+      color: 0xffffff,
+      side: THREE.DoubleSide,
+    });
 
-  return paperMesh;
-}
+    const paperMesh = new THREE.Mesh(paperGeometry, paperMaterial);
+    paperMesh.position.set(-0.275, 1.25, -0.9); // Place it near the computer
+    paperMesh.rotation.y = Math.PI * -0.035;    // Face it properly
 
+    return paperMesh;
+  }
 
+  loadWebsiteToScreen(url) {
+    // Create temporary iframe to capture
+    const iframe = document.createElement('iframe');
+    iframe.style.width = '800px';
+    iframe.style.height = '600px';
+    iframe.style.position = 'absolute';
+    iframe.style.top = '-9999px';
+    iframe.style.left = '-9999px';
+    iframe.src = url;
+    
+    document.body.appendChild(iframe);
+    
+    // Give the iframe time to load content, then capture it
+    iframe.onload = () => {
+      setTimeout(() => {
+        // Note: This might not work with Google due to X-Frame-Options
+        html2canvas(iframe.contentDocument.body).then(canvas => {
+          // Create texture from canvas
+          const texture = new THREE.CanvasTexture(canvas);
+          
+          // Apply to display surface
+          if (this.displaySurface) {
+            this.displaySurface.material.map = texture;
+            this.displaySurface.material.color.set(0xffffff); // Reset color to white
+            this.displaySurface.material.needsUpdate = true;
+          }
+          
+          // Remove temporary iframe
+          document.body.removeChild(iframe);
+        }).catch(error => {
+          console.error("Couldn't capture website content:", error);
+          document.body.removeChild(iframe);
+        });
+      }, 2000); // Give it 2 seconds to load
+    };
+  }
 
   displayHeadline(headline) {
     // Create a canvas texture for the headline

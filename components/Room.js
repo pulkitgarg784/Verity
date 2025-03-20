@@ -5,9 +5,9 @@ export class Room extends THREE.Group {
     super();
     
     // Room dimensions
-    const width = 10;
-    const height = 3;
-    const depth = 10;
+    const width = 20;
+    const height = 5;
+    const depth = 20;
     
     // Create room walls
     const geometry = new THREE.BoxGeometry(width, height, depth);

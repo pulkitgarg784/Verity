@@ -1,7 +1,7 @@
 export class GameState {
     constructor() {
       this.currentRound = 0;
-      this.totalRounds = 5;
+      this.totalRounds = 10;
       this.score = 0;
       this.isGameActive = false;
       this.isRoundActive = false;
