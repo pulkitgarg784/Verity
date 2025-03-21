@@ -1,11 +1,11 @@
 import * as THREE from "three";
-import { Room } from "./components/Room.js";
-import { Desk } from "./components/Desk.js";
-import { Computer } from "./components/Computer.js";
-import { GameState } from "./GameState.js";
-import { HeadlineManager } from "./HeadlineManager.js";
-import { UserInterface } from "./UserInterface.js";
-import { PlayerControls } from "./PlayerControl.js";
+import { Room } from "./public/src/components/Room.js";
+import { Desk } from "./public/src/components/Desk.js";
+import { Computer } from "./public/src/components/Computer.js";
+import { GameState } from "./public/src/GameState.js";
+import { HeadlineManager } from "./public/src/HeadlineManager.js";
+import { UserInterface } from "./public/src/UserInterface.js";
+import { PlayerControls } from "./public/src/PlayerControl.js";
 
 const loadingOverlay = document.createElement("div");
 loadingOverlay.id = "loading-overlay";
