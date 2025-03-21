@@ -7,6 +7,7 @@ export class UserInterface {
     this.realButton = this.createButton("Real", "real-btn");
     this.fakeButton = this.createButton("Fake", "fake-btn");
     this.startButton = this.createButton("Start Game", "start-btn");
+    this.dialogueBox = this.createDialogueBox(); // New dialogue box
 
     this.container.appendChild(this.messageElement);
     this.container.appendChild(this.scoreElement);
@@ -14,7 +15,7 @@ export class UserInterface {
     this.buttonContainer.appendChild(this.fakeButton);
     this.container.appendChild(this.buttonContainer);
     this.container.appendChild(this.startButton);
-
+    document.body.appendChild(this.dialogueBox); // Append dialogue box to the body
     document.body.appendChild(this.container);
 
     this.hideGameButtons();
@@ -82,6 +83,44 @@ export class UserInterface {
 
     button.style.color = "white";
     return button;
+  }
+
+  createDialogueBox() {
+    const dialogueBox = document.createElement("div");
+    dialogueBox.id = "dialogue-box";
+    dialogueBox.style.position = "absolute";
+    dialogueBox.style.top = "10px";
+    dialogueBox.style.left = "50%";
+    dialogueBox.style.transform = "translateX(-50%)";
+    dialogueBox.style.padding = "10px 20px";
+    dialogueBox.style.backgroundColor = "rgba(0, 0, 0, 0.8)";
+    dialogueBox.style.color = "white";
+    dialogueBox.style.fontFamily = "Arial, sans-serif";
+    dialogueBox.style.fontSize = "16px";
+    dialogueBox.style.borderRadius = "5px";
+    dialogueBox.style.textAlign = "center";
+    dialogueBox.style.display = "none"; // Initially hidden
+    return dialogueBox;
+  }
+
+  showDialogue(message, duration = 3000, italics = false) {
+    console.log(message);
+    if (italics) {
+      message = `<i>${message}</i>`;
+      this.dialogueBox.style.color = "blue";
+    }
+    else {  
+      this.dialogueBox.style.color = "white";
+    }
+    this.dialogueBox.style.display = "block";
+    this.dialogueBox.innerHTML = message;
+    setTimeout(() => {
+      this.dialogueBox.style.display = "none";
+    }, duration);
+  }
+
+  hideStartButton() { // New method to hide the start button
+    this.startButton.style.display = "none";
   }
 
   showGameButtons() {

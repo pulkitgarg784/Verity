@@ -59,7 +59,21 @@ document.head.appendChild(style);
 
 // Set up scene
 const scene = new THREE.Scene();
+const listener = new THREE.AudioListener();
 const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+camera.add(listener);
+
+// Define the sound variable
+const sound = new THREE.Audio(listener);
+
+const audioLoader = new THREE.AudioLoader();
+audioLoader.load('Assets/humm.mp3', function(buffer) {
+  console.log("loaded");
+  sound.setBuffer(buffer);
+  sound.setLoop(true);
+  sound.setVolume(0.5);
+});
+
 const renderer = new THREE.WebGLRenderer({ antialias: true });
 renderer.setSize(window.innerWidth, window.innerHeight);
 renderer.setClearColor(0x000000);
@@ -136,10 +150,36 @@ userInterface.realButton.addEventListener('click', () => submitAnswer(true));
 userInterface.fakeButton.addEventListener('click', () => submitAnswer(false));
 
 function startGame() {
-  gameState.startGame();
-  userInterface.showGameButtons();
-  userInterface.updateMessage("Is this headline real or fake?");
-  displayNewHeadline();
+  sound.play();
+  userInterface.hideStartButton();
+
+  // Show dialogues in sequence with cumulative delays
+  userInterface.showDialogue("I wonder where am I...", 4000, false);
+
+  setTimeout(() => {
+    userInterface.showDialogue("Welcome to your new job. Sit down on your desk and sort the truth from the lies. Your survival depends on it.", 4000, true);
+  }, 4000); // Starts after the first dialogue finishes
+
+    // Start the game after all dialogues
+    setTimeout(() => {
+      gameState.startGame();
+      userInterface.showGameButtons();
+      userInterface.updateMessage("Is this headline real or fake?");
+      displayNewHeadline();
+    }, 8000); // Starts after the fifth dialogue finishes
+
+  setTimeout(() => {
+    userInterface.showDialogue("Why is there news headlines on the screen. What am I doing here?", 4000, false);
+  }, 9000); // Starts after the second dialogue finishes
+
+  setTimeout(() => {
+    userInterface.showDialogue("Am I training an AI? Am I predicting the future?", 4000, false);
+  }, 14000); // Starts after the third dialogue finishes
+
+  setTimeout(() => {
+    userInterface.showDialogue("Why am I the only person in this room, also why tf is the floor green?", 4000, false);
+  }, 16000); // Starts after the fourth dialogue finishes
+
 }
 
 var headline = null;
