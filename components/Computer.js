@@ -112,22 +112,22 @@ export class Computer extends THREE.Group {
   displayHeadline(headline) {
     // Create a canvas texture for the headline
     const canvas = document.createElement('canvas');
-    canvas.width = 512;
-    canvas.height = 256;
+    canvas.width = 1024;
+    canvas.height = 512;
     const context = canvas.getContext('2d');
-
+    context.imageSmoothingEnabled = false;
     // Clear canvas
     context.fillStyle = '#ffffff';
     context.fillRect(0, 0, canvas.width, canvas.height);
 
     // Format and draw headline
-    context.font = '24px Arial';
+    context.font = '48px Arial';
     context.fillStyle = 'black';
     context.textAlign = 'center';
     context.textBaseline = 'middle';
 
     // Word wrap headline
-    const maxWidth = 480;
+    const maxWidth = 980;
     const words = headline.split(' ');
     const lines = [];
     let currentLine = words[0];
@@ -146,7 +146,7 @@ export class Computer extends THREE.Group {
     lines.push(currentLine);
 
     // Draw each line
-    const lineHeight = 30;
+    const lineHeight = 40;
     const startY = canvas.height / 2 - (lines.length - 1) * lineHeight / 2;
 
     lines.forEach((line, i) => {

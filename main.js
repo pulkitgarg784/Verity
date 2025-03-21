@@ -53,36 +53,51 @@ function startGame() {
   displayNewHeadline();
 }
 
+var headline = null;
 function displayNewHeadline() {
-  const { headline, isReal } = headlineManager.getRandomHeadline();
-  computer.displayHeadline(headline);
+  headline = headlineManager.getRandomHeadline();
+  computer.displayHeadline(headline.headline);
   userInterface.updateScore(gameState.score, gameState.currentRound);
 }
 
+
 function submitAnswer(playerChoice) {
+  if(!headline) return;
   const isCorrect = headlineManager.validateChoice(playerChoice);
   gameState.recordAnswer(isCorrect);
-  
+
   if (isCorrect) {
-    userInterface.updateMessage("Correct!");
+    userInterface.updateMessage("Correct! That headline was " + 
+      (headlineManager.isCurrentHeadlineReal 
+        ? `real. Read more at <a href="${headline.link}" target="_blank">${headline.link}</a>` 
+        : "fake"
+      ))
+
   } else {
     userInterface.updateMessage("Wrong! That headline was " + 
-      (headlineManager.isCurrentHeadlineReal ? "real" : "fake"));
+      (headlineManager.isCurrentHeadlineReal 
+        ? `real. Read more at <a href="${headline.link}" target="_blank">${headline.link}</a>` 
+        : "fake"
+      ));
   }
   
   // Display score
   userInterface.updateScore(gameState.score, gameState.currentRound);
   
+  
   // Wait before starting next round
+  userInterface.disableGameButtons();
+
   setTimeout(() => {
     if (gameState.startNewRound()) {
+      userInterface.enableGameButtons();
       userInterface.updateMessage("Is this headline real or fake?");
       displayNewHeadline();
     } else {
       const { finalScore, totalRounds } = gameState.endGame();
       userInterface.showEndGame(finalScore, totalRounds);
     }
-  }, 2000);
+  }, 3000);
 }
 
 // Animation loop
