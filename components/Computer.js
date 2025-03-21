@@ -1,6 +1,5 @@
 import * as THREE from 'three';
 import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
-import html2canvas from 'html2canvas';
 
 export class Computer extends THREE.Group {
   constructor() {
