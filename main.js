@@ -7,6 +7,56 @@ import { HeadlineManager } from './HeadlineManager.js';
 import { UserInterface } from './UserInterface.js';
 import { PlayerControls } from './PlayerControl.js';
 
+// Create loading overlay
+const loadingOverlay = document.createElement('div');
+loadingOverlay.id = 'loading-overlay';
+loadingOverlay.innerHTML = `
+  <div class="loading-container">
+    <h2>Loading Game Assets</h2>
+    <div class="loading-spinner"></div>
+    <p>Preparing your fake news detection workstation...</p>
+  </div>
+`;
+document.body.appendChild(loadingOverlay);
+
+// Add CSS for loading overlay
+const style = document.createElement('style');
+style.textContent = `
+  #loading-overlay {
+    position: fixed;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    background-color: rgba(0, 0, 0, 0.85);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+  }
+  .loading-container {
+    text-align: center;
+    color: white;
+    font-family: Arial, sans-serif;
+    padding: 20px;
+    background-color: rgba(0, 0, 0, 0.5);
+    border-radius: 10px;
+  }
+  .loading-spinner {
+    margin: 20px auto;
+    width: 50px;
+    height: 50px;
+    border: 4px solid rgba(255, 255, 255, 0.3);
+    border-radius: 50%;
+    border-top-color: #fff;
+    animation: spin 1s ease-in-out infinite;
+  }
+  @keyframes spin {
+    to { transform: rotate(360deg); }
+  }
+`;
+document.head.appendChild(style);
+
 // Set up scene
 const scene = new THREE.Scene();
 const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
@@ -40,6 +90,45 @@ window.addEventListener('resize', () => {
   camera.aspect = window.innerWidth / window.innerHeight;
   camera.updateProjectionMatrix();
 });
+
+// Check if models are loaded
+let loadingChecks = 0;
+const maxChecks = 50; // Will check for 5 seconds max
+let modelsLoaded = false;
+
+function checkModelsLoaded() {
+  // Check if models are loaded by looking at their children
+  if (
+    room.children.length > 0 &&
+    desk.children.length > 0 &&
+    computer.children.length > 0
+  ) {
+    // Models appear to be loaded
+    hideLoadingScreen();
+    return;
+  }
+
+  // If we've checked too many times, show the UI anyway
+  if (loadingChecks >= maxChecks) {
+    hideLoadingScreen();
+    return;
+  }
+
+  loadingChecks++;
+  setTimeout(checkModelsLoaded, 100);
+}
+
+function hideLoadingScreen() {
+  if (!modelsLoaded) {
+    modelsLoaded = true;
+    document.getElementById('loading-overlay').style.display = 'none';
+    // Make sure the start button is visible after loading
+    userInterface.startButton.style.display = 'block';
+  }
+}
+
+// Start checking if models are loaded
+setTimeout(checkModelsLoaded, 500);
 
 // Set up game interactions
 userInterface.startButton.addEventListener('click', startGame);
