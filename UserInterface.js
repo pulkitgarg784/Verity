@@ -7,7 +7,7 @@ export class UserInterface {
     this.realButton = this.createButton("Real", "real-btn");
     this.fakeButton = this.createButton("Fake", "fake-btn");
     this.startButton = this.createButton("Start Game", "start-btn");
-    this.dialogueBox = this.createDialogueBox(); // New dialogue box
+    this.dialogueBox = this.createDialogueBox();
 
     this.container.appendChild(this.messageElement);
     this.container.appendChild(this.scoreElement);
@@ -15,7 +15,7 @@ export class UserInterface {
     this.buttonContainer.appendChild(this.fakeButton);
     this.container.appendChild(this.buttonContainer);
     this.container.appendChild(this.startButton);
-    document.body.appendChild(this.dialogueBox); // Append dialogue box to the body
+    document.body.appendChild(this.dialogueBox);
     document.body.appendChild(this.container);
 
     this.hideGameButtons();
@@ -99,7 +99,7 @@ export class UserInterface {
     dialogueBox.style.fontSize = "16px";
     dialogueBox.style.borderRadius = "5px";
     dialogueBox.style.textAlign = "center";
-    dialogueBox.style.display = "none"; // Initially hidden
+    dialogueBox.style.display = "none";
     return dialogueBox;
   }
 
@@ -108,8 +108,7 @@ export class UserInterface {
     if (italics) {
       message = `<i>${message}</i>`;
       this.dialogueBox.style.color = "blue";
-    }
-    else {  
+    } else {
       this.dialogueBox.style.color = "white";
     }
     this.dialogueBox.style.display = "block";
@@ -119,7 +118,7 @@ export class UserInterface {
     }, duration);
   }
 
-  hideStartButton() { // New method to hide the start button
+  hideStartButton() {
     this.startButton.style.display = "none";
   }
 

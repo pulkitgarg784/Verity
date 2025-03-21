@@ -77,36 +77,33 @@ export class HeadlineManager {
   }
 
   getRandomHeadline() {
-    // Randomly choose between real and fake
     this.isCurrentHeadlineReal = Math.random() > 0.5;
-  
+
     const sourceArray = this.isCurrentHeadlineReal ? this.realHeadlines : this.fakeHeadlines;
-    const availableHeadlines = sourceArray.filter(item => {
-      // if it's real, 'item' is an object; if it's fake, 'item' is a string
-      const text = typeof item === 'string' ? item : item.text;
+    const availableHeadlines = sourceArray.filter((item) => {
+      const text = typeof item === "string" ? item : item.text;
       return !this.usedHeadlines.has(text);
     });
-  
+
     if (availableHeadlines.length === 0) {
       console.warn("No more headlines available in this category.");
       return null;
     }
-  
+
     const randomIndex = Math.floor(Math.random() * availableHeadlines.length);
     const chosenItem = availableHeadlines[randomIndex];
-    const chosenText = typeof chosenItem === 'string' ? chosenItem : chosenItem.text;
+    const chosenText = typeof chosenItem === "string" ? chosenItem : chosenItem.text;
     const chosenLink = chosenItem.link || null;
-  
+
     this.currentHeadline = chosenText;
     this.usedHeadlines.add(chosenText);
-  
+
     return {
       headline: chosenText,
       link: chosenLink,
-      isReal: this.isCurrentHeadlineReal
+      isReal: this.isCurrentHeadlineReal,
     };
   }
-  
 
   validateChoice(playerChoice) {
     return playerChoice === this.isCurrentHeadlineReal;
