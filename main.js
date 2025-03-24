@@ -1,11 +1,11 @@
 import * as THREE from "three";
-import { Room } from "./public/src/components/Room.js";
-import { Desk } from "./public/src/components/Desk.js";
-import { Computer } from "./public/src/components/Computer.js";
-import { GameState } from "./public/src/GameState.js";
-import { HeadlineManager } from "./public/src/HeadlineManager.js";
-import { UserInterface } from "./public/src/UserInterface.js";
-import { PlayerControls } from "./public/src/PlayerControl.js";
+import { Room } from "./src/components/Room.js";
+import { Desk } from "./src/components/Desk.js";
+import { Computer } from "./src/components/Computer.js";
+import { GameState } from "./src/GameState.js";
+import { HeadlineManager } from "./src/HeadlineManager.js";
+import { UserInterface } from "./src/UserInterface.js";
+import { PlayerControls } from "./src/PlayerControl.js";
 
 const loadingOverlay = document.createElement("div");
 loadingOverlay.id = "loading-overlay";
@@ -63,7 +63,7 @@ camera.add(listener);
 const sound = new THREE.Audio(listener);
 
 const audioLoader = new THREE.AudioLoader();
-audioLoader.load("Assets/humm.mp3", function (buffer) {
+audioLoader.load("./humm.mp3", function (buffer) {
   console.log("loaded");
   sound.setBuffer(buffer);
   sound.setLoop(true);
@@ -98,7 +98,7 @@ window.addEventListener("resize", () => {
 });
 
 let loadingChecks = 0;
-const maxChecks = 50;
+const maxChecks = 1000;
 let modelsLoaded = false;
 
 function checkModelsLoaded() {
